@@ -8,7 +8,7 @@ module Gemini
     summary: "Interact with Google's Gemini AI.",
     description: "A Ruby Gem for interacting with Gemini through Vertex AI, Generative Language API, or AI Studio, Google's generative AI services.",
     github: 'https://github.com/gbaptista/gemini-ai',
-    gem_server: 'https://rubygems.org',
+    gem_server: 'https://rubygems.pkg.github.com/sanjustoresearch',
     license: 'MIT',
     ruby: '3.1.0'
   }.freeze
