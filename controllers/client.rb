@@ -72,6 +72,8 @@ module Gemini
 
         @server_sent_events = config.dig(:options, :server_sent_events)
 
+        @ssl_options = config.dig(:options, :connection, :ssl) || {}
+
         @request_options = config.dig(:options, :connection, :request)
 
         @faraday_adapter = config.dig(:options, :connection, :adapter) || DEFAULT_FARADAY_ADAPTER
@@ -182,7 +184,7 @@ module Gemini
 
         method_to_call = request_method.to_s.strip.downcase.to_sym
 
-        response = Faraday.new(request: @request_options) do |faraday|
+        response = Faraday.new(ssl: @ssl_options, request: @request_options) do |faraday|
           faraday.adapter(*@faraday_adapter)
           faraday.response :raise_error
         end.send(method_to_call) do |request|

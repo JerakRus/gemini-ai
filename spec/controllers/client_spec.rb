@@ -105,4 +105,36 @@ RSpec.describe Gemini do
       stubs.verify_stubbed_calls
     end
   end
+
+  describe 'custom ssl options' do
+    let(:stubs) { Faraday::Adapter::Test::Stubs.new }
+    let(:faraday_test_adapter) { :test }
+
+    it 'sends custom ssl options with the request' do
+      custom_ssl_options = { client_cert: '/cert.cert' }
+
+      stubs.post(/.*/) do |env|
+        expect(env.ssl.client_cert).to eq(custom_ssl_options[:client_cert])
+        [200, {}, '{}']
+      end
+
+      client = described_class.new(
+        credentials: {
+          service: 'vertex-ai-api',
+          region: 'us-east4',
+          api_key: 'key'
+        },
+        options: {
+          model: 'gemini-pro',
+          connection: {
+            adapter: [:test, stubs],
+            ssl: custom_ssl_options
+          }
+        }
+      )
+
+      client.predict({ content: 'Test' })
+      stubs.verify_stubbed_calls
+    end
+  end
 end
