@@ -181,7 +181,7 @@ module Gemini
         results = []
 
         method_to_call = request_method.to_s.strip.downcase.to_sym
-
+        Rails.logger.info("REQUEST OPTIONS: #{@request_options}")
         response = Faraday.new(request: @request_options) do |faraday|
           faraday.adapter(*@faraday_adapter)
           faraday.response :raise_error
